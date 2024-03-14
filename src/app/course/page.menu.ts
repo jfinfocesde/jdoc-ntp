@@ -105,8 +105,8 @@ export const itemsInfo: itemsInfoType[] = [
                 date: '2024-3-15',
             },
             {
-                href: "/course/activities/actividad4",
-                label: "Actividad 4",
+                href: "/course/activities/actividad5",
+                label: "Actividad 5",
                 date: '2024-3-15',
             },
         ]
