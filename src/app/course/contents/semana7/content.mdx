@@ -1,0 +1,287 @@
+# Pip
+
+## **¿Qué es Pip?**
+
+Pip es un gestor de paquetes para Python que te permite instalar, actualizar, desinstalar y buscar bibliotecas y paquetes de terceros de forma sencilla. Es una herramienta fundamental para cualquier desarrollador de Python, ya que facilita el desarrollo y la distribución de aplicaciones y proyectos.
+
+## **Instalación de Pip:**
+
+Pip viene preinstalado con Python 3.4 y versiones posteriores. Si usas una versión anterior de Python, puedes instalar Pip siguiendo estos pasos:
+
+### **1\. Descarga el archivo de instalación:**
+
+Accede a la página oficial de Pip: [https://pypi.org/project/pip/](https://pypi.org/project/pip/) y descarga el archivo de instalación adecuado para tu sistema operativo.
+
+### **2\. Instala Pip:**
+
+Ejecuta el archivo de instalación descargado y sigue las instrucciones en pantalla.
+
+## **Uso de Pip:**
+
+Para usar Pip, abre una ventana de terminal y navega hasta la carpeta de tu proyecto. Algunos de los comandos básicos de Pip son:
+
+-   **`pip install <nombre_paquete>`:** Instala un paquete de Python.
+-   **`pip uninstall <nombre_paquete>`:** Desinstala un paquete de Python.
+-   **`pip list`:** Muestra una lista de los paquetes instalados.- 
+-   **`pip show <nombre_paquete>`:** Muestra información detallada sobre un paquete de Python.
+-   **`pip install --upgrade <nombre_paquete>`:** Actualiza un paquete de Python a la última versión.
+
+### **Ejemplo:**
+
+Para instalar la biblioteca NumPy, puedes usar el siguiente comando:
+
+```bash
+pip install numpy
+```
+
+# Ambientes Virtuales
+
+## **¿Qué son los ambientes virtuales en Python?**
+
+Los ambientes virtuales en Python son directorios aislados que contienen versiones específicas de las bibliotecas y paquetes de Python necesarios para un proyecto en particular. Este aislamiento ofrece varias ventajas:
+
+### **1\. Gestión de dependencias:**
+
+Te permite asegurarte de que cada proyecto tenga las versiones exactas de las bibliotecas que necesita, evitando conflictos con otros proyectos que podrían usar diferentes versiones de las mismas bibliotecas.
+
+### **2\. Portabilidad del proyecto:**
+
+Al compartir tu proyecto con otros, pueden recrear fácilmente el mismo entorno que utilizaste para el desarrollo instalando los paquetes necesarios dentro del ambiente virtual. Esto evita problemas causados por la falta de bibliotecas o por incompatibilidades en sus sistemas.
+
+### **3\. Limpieza:**
+
+Los ambientes virtuales mantienen tu instalación de Python a nivel del sistema limpia y organizada. No tienes que preocuparte por instalar accidentalmente paquetes para un proyecto que podrían interferir con otro.
+
+## **¿Cómo crear ambientes virtuales en Python?**
+
+Existen dos métodos comunes para crear ambientes virtuales en Python:
+
+### **1\. Usando el módulo `venv` (Python 3.3+):**
+
+El módulo `venv` es la forma recomendada para crear ambientes virtuales en las versiones modernas de Python (3.3 y posteriores). Sigue estos pasos:
+
+```bash
+python -m venv mi_ambiente  # Reemplaza "mi_ambiente" con el nombre que deseas para el ambiente
+```
+
+Esto crea un directorio llamado `mi_ambiente` (o el nombre que elijas) que contiene los archivos necesarios para el ambiente virtual.
+
+### **2\. Usando el paquete `virtualenv` (instalación externa):**
+
+Si estás usando una versión anterior de Python o prefieres más funciones, puedes instalar el paquete `virtualenv` usando `pip`:
+
+```bash
+pip install virtualenv
+```
+
+Luego, crea un ambiente virtual con:
+
+```bash
+virtualenv mi_ambiente
+```
+
+## **Activación de un ambiente virtual:**
+
+Una vez que hayas creado un ambiente virtual, necesitas activarlo para empezar a usarlo. El proceso de activación varía ligeramente según tu sistema operativo:
+
+### **Windows:**
+
+```bash
+mi_ambiente\Scripts\activate.bat
+```
+
+### **macOS/Linux:**
+
+```bash
+source mi_ambiente/bin/activate
+```
+
+Normalmente, verás el nombre del ambiente virtual antepuesto al símbolo del sistema, lo que indica que está activo.
+
+## **Instalación de paquetes dentro de un ambiente virtual:**
+
+Con el ambiente virtual activado, puedes instalar bibliotecas y paquetes de Python usando `pip`:
+
+```bash
+pip install numpy pandas  # Ejemplo de instalación de paquetes
+```
+
+Estos paquetes se instalarán específicamente dentro del ambiente virtual, de forma aislada de la instalación de Python a nivel del sistema.
+
+## **Desactivación de un ambiente virtual:**
+
+Cuando termines de trabajar con el ambiente virtual, puedes desactivarlo simplemente ejecutando este comando:
+
+```bash
+deactivate
+```
+
+Esto te devolverá al shell normal del sistema.
+
+
+# Crear un archivo `requirements.txt` 
+
+Es esencial para definir las dependencias exactas que se necesitan para ejecutar un proyecto de Python.
+
+## **¿Por qué crear un archivo `requirements.txt`?**
+
+-   **Gestión de dependencias**: Especifica las bibliotecas y sus versiones exactas que el proyecto requiere.
+-   **Consistencia del entorno**: Asegura que todos los desarrolladores trabajen con las mismas versiones de las dependencias.
+-   **Facilidad de instalación**: Permite instalar todas las dependencias con un solo comando.
+
+## **¿Cómo crear un archivo `requirements.txt`?**
+
+### 1.  **Usa un entorno virtual**: Esto aísla las dependencias de tu proyecto de las globales del sistema.
+```bash
+python -m venv mi_entorno
+```
+
+### 2.  **Instala las dependencias**: Instala las bibliotecas que tu proyecto necesita dentro del entorno virtual.
+```bash
+pip install flask  # Ejemplo de instalación de Flask
+```
+
+### 3.  **Genera el archivo `requirements.txt`**: Con el siguiente comando, se listarán todas las dependencias instaladas en el entorno virtual.
+
+```bash
+pip freeze > requirements.txt
+```
+
+## **¿Cómo restaurar las dependencias desde un archivo `requirements.txt`?** 
+
+Para instalar todas las dependencias listadas en tu `requirements.txt`, ejecutar:
+
+```bash
+pip install -r requirements.txt
+```
+
+# Streamlit: Framework para aplicaciones web de datos
+
+Sitio web oficial: https://streamlit.io/
+
+## **¿Qué es Streamlit?**
+
+Streamlit es un framework de código abierto para Python que te permite crear aplicaciones web interactivas con datos de forma rápida y sencilla. Está diseñado para facilitar la creación de dashboards, visualizaciones de datos, aplicaciones de aprendizaje automático y mucho más, sin necesidad de experiencia en desarrollo web front-end.
+
+### **Características principales:**
+
+-   **Interactividad:** Crea interfaces de usuario interactivas con widgets como sliders, botones y selectores de fecha.
+-   **Visualización de datos:** Integra gráficos y visualizaciones de datos con bibliotecas populares como Matplotlib, Seaborn y Plotly.
+-   **Aprendizaje automático:** Implementa modelos de aprendizaje automático y visualiza sus resultados en tiempo real.
+-   **Compartibilidad:** Comparte tus aplicaciones web con otros usuarios fácilmente, incluso si no tienen experiencia en Python.
+
+###  **Ventajas de usar Streamlit:**
+
+-   **Facilidad de uso:** No necesitas conocimientos de HTML, CSS o JavaScript para crear aplicaciones web.
+-   **Rapidez:** Puedes crear aplicaciones web en cuestión de minutos u horas.
+-   **Interactividad:** Crea interfaces de usuario interactivas que facilitan la exploración de datos.
+-   **Flexibilidad:** Puedes usar Streamlit con una amplia variedad de bibliotecas de Python.
+
+### **¿Para quién es Streamlit?**
+
+Streamlit es ideal para:
+
+-   **Científicos de datos:** Para crear dashboards y visualizaciones de datos interactivas.
+-   **Desarrolladores de software:** Para crear aplicaciones web de datos de forma rápida y sencilla.
+-   **Estudiantes:** Para aprender sobre desarrollo web de datos y aprendizaje automático.
+
+
+## **Instalación de Streamlit**
+
+```bash
+pip install streamlit
+```
+
+## Tutorial básico de Streamlit
+
+### **Introducción:**
+
+Streamlit es un framework de código abierto para Python que te permite crear aplicaciones web interactivas con datos de forma rápida y sencilla. Este tutorial te guiará a través de los conceptos básicos para crear tu primera aplicación web con Streamlit.
+
+**Requisitos:**
+
+-   Python 3.6 o superior
+-   Pip instalado
+-   Streamlit instalado (ver sección de instalación)
+**Creación de una aplicación básica:**
+
+#### 1.  Crea un nuevo archivo Python y llámalo `mi_app.py`.
+#### 2.  Importa la biblioteca Streamlit:
+
+
+```python
+import streamlit as st
+```
+
+#### 3.  Agrega un título a tu aplicación:
+
+```python
+st.title("Mi primera aplicación Streamlit")
+```
+
+#### 4.  Muestra un mensaje de texto:
+
+```python
+st.write("Hola, mundo!")
+```
+
+#### 5.  Ejecuta el archivo Python:
+
+```bash
+streamlit run mi_app.py
+```
+
+### **Explorando widgets:**
+
+Streamlit ofrece una variedad de widgets para crear interfaces de usuario interactivas. Algunos ejemplos:
+
+-   **`st.button`:** Crea un botón que puede ejecutar una acción.
+-   **`st.text_input`:** Permite al usuario ingresar texto.
+-   **`st.slider`:** Muestra un control deslizante para seleccionar un valor dentro de un rango.
+-   **`st.selectbox`:** Permite al usuario seleccionar una opción de una lista.
+
+### **Ejemplo de widget:**
+
+```python
+import streamlit as st
+# Crea un botón
+st.button("Haz clic")
+
+# Muestra un campo de entrada de texto
+nombre = st.text_input("Ingresa tu nombre")
+
+# Muestra un slider
+numero = st.slider("Selecciona un número", 0, 100)
+
+# Muestra un cuadro de selección
+opcion = st.selectbox("Elige una opción", ["Opción 1", "Opción 2", "Opción 3"])
+
+# Muestra los valores ingresados
+st.write("Nombre:", nombre)
+st.write("Número:", numero)
+st.write("Opción:", opcion)
+```
+
+### **Visualización de datos:**
+
+Streamlit también te permite integrar gráficos y visualizaciones de datos con bibliotecas populares como Matplotlib, Seaborn y Plotly.
+
+**Ejemplo de visualización:**
+
+```python
+import streamlit as st
+import matplotlib.pyplot as plt
+
+# Crea algunos datos
+x = [1, 2, 3, 4, 5]
+y = [2, 4, 6, 8, 10]
+
+# Crea un gráfico
+plt.plot(x, y)
+plt.xlabel("Eje X")
+plt.ylabel("Eje Y")
+
+# Muestra el gráfico en Streamlit
+st.pyplot(plt)
+```
+
