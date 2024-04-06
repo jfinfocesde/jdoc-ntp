@@ -61,24 +61,11 @@ Existen dos métodos comunes para crear ambientes virtuales en Python:
 El módulo `venv` es la forma recomendada para crear ambientes virtuales en las versiones modernas de Python (3.3 y posteriores). Sigue estos pasos:
 
 ```bash
-python -m venv mi_ambiente  # Reemplaza "mi_ambiente" con el nombre que deseas para el ambiente
+python -m venv venv  # Reemplaza "mi_ambiente" con el nombre que deseas para el ambiente
 ```
 
 Esto crea un directorio llamado `mi_ambiente` (o el nombre que elijas) que contiene los archivos necesarios para el ambiente virtual.
 
-### **2\. Usando el paquete `virtualenv` (instalación externa):**
-
-Si estás usando una versión anterior de Python o prefieres más funciones, puedes instalar el paquete `virtualenv` usando `pip`:
-
-```bash
-pip install virtualenv
-```
-
-Luego, crea un ambiente virtual con:
-
-```bash
-virtualenv mi_ambiente
-```
 
 ## **Activación de un ambiente virtual:**
 
@@ -87,13 +74,14 @@ Una vez que hayas creado un ambiente virtual, necesitas activarlo para empezar a
 ### **Windows:**
 
 ```bash
-mi_ambiente\Scripts\activate.bat
+venv\Scripts\Activate.ps1
+venv\Scripts\Activate.bat
 ```
 
 ### **macOS/Linux:**
 
 ```bash
-source mi_ambiente/bin/activate
+source ven/bin/activate
 ```
 
 Normalmente, verás el nombre del ambiente virtual antepuesto al símbolo del sistema, lo que indica que está activo.
@@ -133,7 +121,7 @@ Es esencial para definir las dependencias exactas que se necesitan para ejecutar
 
 ### 1.  **Usa un entorno virtual**: Esto aísla las dependencias de tu proyecto de las globales del sistema.
 ```bash
-python -m venv mi_entorno
+python -m venv venv
 ```
 
 ### 2.  **Instala las dependencias**: Instala las bibliotecas que tu proyecto necesita dentro del entorno virtual.
