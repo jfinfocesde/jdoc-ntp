@@ -11,7 +11,7 @@ interface itemsInfoType {
     submenu: subItemsInfoType[]
 }
 
-export const modedev = true
+export const modedev = false
 
 export const infoCourse = {
     title: "Nuevas Tecnologías de programación",
@@ -137,6 +137,23 @@ export const itemsInfo: itemsInfoType[] = [
                 href: "/course/contents/semana7",
                 label: "Contenido",
                 date: '2024-4-5',
+            },
+            // {
+            //     href: "/course/activities/actividad5",
+            //     label: "Actividad 5",
+            //     date: '2024-3-15',
+            // },
+        ]
+    },    
+    {
+        href: "",
+        label: "Semana 8",
+        date: '2024-4-12',
+        submenu: [
+            {
+                href: "/course/contents/semana8",
+                label: "Contenido",
+                date: '2024-4-12',
             },
             // {
             //     href: "/course/activities/actividad5",
