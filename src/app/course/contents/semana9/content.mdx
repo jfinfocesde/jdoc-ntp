@@ -1,0 +1,189 @@
+# Filtros en Pandas por comparación
+
+Los filtros por comparación son una herramienta fundamental en Pandas para seleccionar subconjuntos de datos específicos en base a criterios de comparación entre valores de columnas o expresiones. Estos filtros permiten aislar información relevante para análisis posteriores, visualización o creación de nuevos DataFrames.
+
+## **1\. Filtros con operadores de comparación:**
+
+-   **Operadores básicos:** Se utilizan operadores como `==`, `!=`, `<`, `>`, `<=` y `>=` para comparar valores de columnas o expresiones.
+
+```python
+import pandas as pd
+
+# Crear un DataFrame de ejemplo
+data = {'Nombre': ['Ana', 'Juan', 'Pedro', 'María'], 'Edad': [25, 30, 22, 27], 'Ciudad': ['Medellín', 'Bogotá', 'Cali', 'Cartagena']}
+dataframe = pd.DataFrame(data)
+
+# Seleccionar filas donde la edad es mayor a 25
+dataframe[dataframe['Edad'] > 25]
+
+# Seleccionar filas donde la ciudad no sea Medellín
+dataframe[dataframe['Ciudad'] != 'Medellín']
+```
+
+-   **Comparaciones con múltiples valores:** Se pueden utilizar listas o conjuntos para comparar con múltiples valores.
+
+```python
+import pandas as pd
+
+# Crear un DataFrame de ejemplo
+data = {'Nombre': ['Ana', 'Juan', 'Pedro', 'María'], 'Edad': [25, 30, 22, 27], 'Ciudad': ['Medellín', 'Bogotá', 'Cali', 'Cartagena']}
+dataframe = pd.DataFrame(data)
+
+# Seleccionar filas donde la edad esté en la lista [22, 27]
+dataframe[dataframe['Edad'].isin([22, 27])]
+
+# Seleccionar filas donde la ciudad sea Bogotá o Cali
+dataframe[(dataframe['Ciudad'] == 'Bogotá') | (dataframe['Ciudad'] == 'Cali')]
+```
+
+## **2\. Filtros con expresiones booleanas:**
+
+-   **Creación de expresiones booleanas:** Se construyen expresiones utilizando operadores lógicos (`and`, `or`, `not`) y comparaciones con operadores de comparación.
+
+```python
+import pandas as pd
+
+# Crear un DataFrame de ejemplo
+data = {'Nombre': ['Ana', 'Juan', 'Pedro', 'María'], 'Edad': [25, 30, 22, 27], 'Ciudad': ['Medellín', 'Bogotá', 'Cali', 'Cartagena']}
+dataframe = pd.DataFrame(data)
+
+# Seleccionar filas donde la edad es mayor a 25 y la ciudad sea Medellín
+dataframe[(dataframe['Edad'] > 25) & (dataframe['Ciudad'] == 'Medellín')]
+
+# Seleccionar filas donde la edad no sea 25 y la ciudad no sea Bogotá
+dataframe[~((dataframe['Edad'] == 25) & (dataframe['Ciudad'] == 'Bogotá'))]
+```
+
+## **3\. Filtros con funciones personalizadas:**
+
+-   **Definición de funciones:** Se crean funciones personalizadas que toman un elemento del DataFrame como argumento y devuelven un valor booleano que indica si se debe incluir o no la fila.
+
+```python
+import pandas as pd
+
+# Crear un DataFrame de ejemplo
+data = {'Nombre': ['Ana', 'Juan', 'Pedro', 'María'], 'Edad': [25, 30, 22, 27], 'Ciudad': ['Medellín', 'Bogotá', 'Cali', 'Cartagena']}
+dataframe = pd.DataFrame(data)
+
+def es_mayor_de_edad(edad):
+    return edad >= 18
+
+# Seleccionar filas donde la edad es mayor o igual a 18 usando una función personalizada
+dataframe[dataframe.apply(lambda x: es_mayor_de_edad(x['Edad']), axis=1)]
+```
+
+## **4\. Combinación de filtros:**
+
+-   **Anidamiento de filtros:** Se pueden anidar filtros para obtener subconjuntos más específicos.
+
+```python
+import pandas as pd
+
+# Crear un DataFrame de ejemplo
+data = {'Nombre': ['Ana', 'Juan', 'Pedro', 'María'], 'Edad': [25, 30, 22, 27], 'Ciudad': ['Medellín', 'Bogotá', 'Cali', 'Cartagena']}
+dataframe = pd.DataFrame(data)
+
+# Seleccionar filas donde la edad sea mayor a 25, la ciudad sea Medellín y el nombre no sea Ana
+dataframe[(dataframe['Edad'] > 25) & (dataframe['Ciudad'] == 'Medellín') & (dataframe['Nombre'] != 'Ana')]
+```
+
+# Métodos en Pandas
+
+Pandas es una biblioteca de Python ampliamente utilizada para el análisis y la manipulación de datos. Ofrece una amplia gama de funcionalidades para trabajar con DataFrames, Series y otras estructuras de datos.
+
+A continuación se presenta una lista categorizada de algunos de los métodos más comunes y útiles en Pandas, junto con ejemplos de su uso:
+
+## **1\. Selección de datos:**
+
+-   **`head()`:** Muestra las primeras n filas del DataFrame (por defecto, las primeras 5).
+    -   Ejemplo: `df.head(10)` muestra las primeras 10 filas del DataFrame `df`.
+-   **`tail()`:** Muestra las últimas n filas del DataFrame (por defecto, las últimas 5).
+    -   Ejemplo: `df.tail(3)` muestra las últimas 3 filas del DataFrame `df`.
+-   **`loc[]`:** Permite seleccionar filas y columnas por índice o etiqueta.
+    -   Ejemplo: `df.loc[0, 'Nombre']` selecciona el valor en la fila 0 y la columna 'Nombre' del DataFrame `df`.
+-   **`iloc[]`:** Permite seleccionar filas y columnas por posición numérica.
+    -   Ejemplo: `df.iloc[2:5, 1:3]` selecciona las filas 2 a 4 (inclusive) y las columnas 1 a 2 (inclusive) del DataFrame `df`.
+-   **`ix[]`:** Permite seleccionar filas y columnas por índice o posición numérica (combinación de `loc[]` e `iloc[]`).
+    -   Ejemplo: `df.ix[0:2, 'Nombre':'Ciudad']` selecciona las filas 0 a 2 (inclusive) y las columnas 'Nombre' a 'Ciudad' (inclusive) del DataFrame `df`.
+## **2\. Filtrado de datos:**
+
+-   **`query()`:** Permite filtrar filas con una expresión booleana.
+    -   Ejemplo: `df.query('Edad > 30 and Ciudad == "Medellín"')` selecciona las filas donde la edad es mayor a 30 y la ciudad es "Medellín".
+-   **`isin()`:** Permite filtrar filas por valores específicos en una columna.
+    -   Ejemplo: `df[df['Ciudad'].isin(['Medellín', 'Bogotá'])]` selecciona las filas donde la ciudad es "Medellín" o "Bogotá".
+-   **`between()`:** Permite filtrar filas por un rango de valores en una columna.
+    -   Ejemplo: `df[df['Edad'].between(20, 35)]` selecciona las filas donde la edad está entre 20 y 35 (inclusive).
+-   **`dropna()`:** Elimina filas con valores faltantes (NaN).
+    -   Ejemplo: `df.dropna(subset=['Edad', 'Ciudad'])` elimina las filas con valores faltantes en las columnas 'Edad' y 'Ciudad'.
+## **3\. Agrupación y agregación de datos:**
+
+-   **`groupby()`:** Agrupa el DataFrame por una o más columnas.
+    -   Ejemplo: `df_agrupado = df.groupby('Ciudad')` agrupa el DataFrame `df` por la columna 'Ciudad'.
+-   **`agg()`:** Aplica funciones de agregación a las columnas agrupadas.
+    -   Ejemplo: `df_agrupado['Edad'].agg(['mean', 'sum', 'count'])` calcula la media, la suma y el conteo de la edad para cada grupo en el DataFrame agrupado `df_agrupado`.
+-   **`mean()`:** Calcula la media de cada columna agrupada.
+    -   Ejemplo: `df_agrupado['Edad'].mean()` calcula la media de la edad para cada grupo en el DataFrame agrupado `df_agrupado`.
+-   **`sum()`:** Calcula la suma de cada columna agrupada.
+    -   Ejemplo: `df_agrupado['Edad'].sum()` calcula la suma de la edad para cada grupo en el DataFrame agrupado `df_agrupado`.
+-   **`count()`:** Cuenta el número de filas en cada grupo.
+    -   Ejemplo: `df_agrupado['Edad'].count()` cuenta el número de filas en cada grupo en el DataFrame agrupado `df_agrupado`.
+## **4\. Ordenación de datos:**
+
+-   **`sort_values()`:** Ordena el DataFrame por una o más columnas.
+    -   Ejemplo: `df.sort_values(by=['Edad', 'Nombre'], ascending=[False, True])` ordena el DataFrame `df` por la columna 'Edad' en orden descendente y luego por la columna 'Nombre'
+
+
+# Métodos `min()`, `max()`, `idxmin()`, `idxmax()` en Pandas
+
+En Pandas, los métodos `min()`, `max()`, `idxmin()`, e `idxmax()` se utilizan para encontrar valores mínimos, máximos, y sus índices correspondientes en DataFrames y Series. Estos métodos son esenciales para el análisis de datos y la extracción de información relevante de conjuntos de datos.
+
+## **1\. Método `min()`:**
+
+-   **Función:** Calcula el valor mínimo de una columna o serie.
+-   **Sintaxis:**
+    -   `DataFrame['columna'].min()` para una columna específica en un DataFrame.
+    -   `Series.min()` para una Serie.
+-   **Ejemplo:**
+    -   `df['Edad'].min()` devuelve el valor mínimo de edad en el DataFrame `df`.
+## **2\. Método `max()`:**
+
+-   **Función:** Calcula el valor máximo de una columna o serie.
+-   **Sintaxis:**
+    -   `DataFrame['columna'].max()` para una columna específica en un DataFrame.
+    -   `Series.max()` para una Serie.
+-   **Ejemplo:**
+    -   `df['Edad'].max()` devuelve el valor máximo de edad en el DataFrame `df`.
+## **3\. Método `idxmin()`:**
+
+-   **Función:** Obtiene el índice de la fila donde se encuentra el valor mínimo en una columna o serie.
+-   **Sintaxis:**
+    -   `DataFrame['columna'].idxmin()` para una columna específica en un DataFrame.
+    -   `Series.idxmin()` para una Serie.
+-   **Ejemplo:**
+    -   `df['Edad'].idxmin()` devuelve el índice de la fila con la edad mínima en el DataFrame `df`.
+## **4\. Método `idxmax()`:**
+
+-   **Función:** Obtiene el índice de la fila donde se encuentra el valor máximo en una columna o serie.
+-   **Sintaxis:**
+    -   `DataFrame['columna'].idxmax()` para una columna específica en un DataFrame.
+    -   `Series.idxmax()` para una Serie.
+-   **Ejemplo:**
+    -   `df['Edad'].idxmax()` devuelve el índice de la fila con la edad máxima en el DataFrame `df`.
+## **Diferencias clave:**
+
+-   `min()` y `max()` solo devuelven el valor mínimo o máximo, mientras que `idxmin()` e `idxmax()` devuelven el índice de la fila donde se encuentra ese valor.
+-   Los métodos `idxmin()` e `idxmax()` son particularmente útiles para identificar filas específicas con valores extremos o relevantes para el análisis.
+## **Aplicación en conjunto:**
+
+Los métodos `min()`, `max()`, `idxmin()`, e `idxmax()` se pueden utilizar en conjunto para obtener información más completa sobre los valores extremos y sus ubicaciones en un DataFrame o Serie. Por ejemplo:
+
+```python
+# Encontrar el valor mínimo de edad, su índice y la fila correspondiente
+edad_min = df['Edad'].min()
+indice_min = df['Edad'].idxmin()
+fila_min = df.loc[indice_min]
+
+print(f"Edad mínima: {edad_min}")
+print(f"Índice de la fila con edad mínima: {indice_min}")
+print(f"Fila con edad mínima: {fila_min}")
+```
