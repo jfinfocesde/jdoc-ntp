@@ -1,0 +1,241 @@
+# Loc - Iloc en Pandas
+
+En Pandas, `loc` e `iloc` son dos métodos fundamentales para seleccionar subconjuntos de DataFrames. Si bien ambos permiten aislar datos específicos, lo hacen de diferentes maneras y con distintos propósitos. Dominar estas herramientas es crucial para cualquier analista de datos que trabaje con Pandas.
+
+## **Diferencia principal:**
+
+La distinción fundamental entre `loc` e `iloc` radica en el mecanismo de indexación que emplean:
+
+-   **Loc:** Basado en etiquetas (nombres de filas o columnas).
+-   **Iloc:** Basado en posiciones (índices numéricos de filas o columnas).
+
+# Ejemplos de `loc` en Pandas
+
+`loc` es una herramienta fundamental en Pandas para seleccionar subconjuntos de DataFrames de manera intuitiva y eficiente. A diferencia de `iloc`, que se basa en índices numéricos, `loc` utiliza etiquetas de filas y columnas, facilitando la comprensión del código.
+
+En esta guía, exploraremos 4 ejemplos detallados de `loc` en diferentes escenarios, abarcando desde la selección básica de filas y columnas hasta filtrados más avanzados y combinaciones con indexadores.
+
+## **Ejemplo 1: Selección básica de filas por etiquetas**
+
+Supongamos un DataFrame `df` que almacena datos de clientes:
+
+Python
+
+```python
+import pandas as pd
+
+# Creación de un DataFrame de ejemplo
+df = pd.DataFrame({'Nombre': ['Ana', 'Beatriz', 'Carlos', 'Diego'],
+                   'Ciudad': ['Medellín', 'Bogotá', 'Cali', 'Cartagena'],
+                   'Edad': [30, 25, 22, 33]})
+```
+
+Para seleccionar la fila correspondiente a la clienta "Beatriz", podemos utilizar:
+
+```python
+# Selección de la fila con nombre 'Beatriz' usando loc
+fila_beatriz = df.loc['Beatriz']
+print(fila_beatriz)
+```
+
+Resultado:
+
+```
+Nombre    Beatriz
+Ciudad    Bogotá
+Edad       25
+Name: Beatriz, dtype: object
+```
+
+**Explicación:**
+
+-   `df.loc[]` accede al mecanismo de indexación por etiquetas de `df`.
+-   Dentro de los corchetes, se coloca la etiqueta de la fila que queremos seleccionar: `'Beatriz'`.
+-   El resultado es un nuevo DataFrame que contiene solo la fila especificada.
+## **Ejemplo 2: Selección de columnas por etiquetas**
+
+Para obtener la columna "Edad" del DataFrame `df`:
+
+```python
+# Selección de la columna 'Edad' usando loc
+columna_edad = df.loc[:, 'Edad']
+print(columna_edad)
+```
+
+Resultado:
+
+```
+0    30
+1    25
+2    22
+3    33
+Name: Edad, dtype: int64
+```
+
+**Explicación:**
+
+-   `df.loc[:,]` indica que queremos seleccionar todas las filas.
+-   Entre dos comas, se coloca la etiqueta de la columna deseada: `'Edad'`.
+-   El resultado es una nueva Series que contiene solo los datos de la columna especificada.
+## **Ejemplo 3: Selección de filas y columnas por etiquetas**
+
+Para obtener un subconjunto de `df` que incluya solo las filas "Ana" y "Carlos" y las columnas "Nombre" y "Ciudad":
+
+```python
+# Selección de subconjunto usando loc
+subdf = df.loc[['Ana', 'Carlos'], ['Nombre', 'Ciudad']]
+print(subdf)
+```
+
+Resultado:
+
+    ```
+    Nombre       Ciudad
+0    Ana     Medellín
+2  Carlos      Cali
+```
+
+**Explicación:**
+
+-   `df.loc[filas, columnas]` selecciona filas y columnas a la vez.
+-   Dentro de los corchetes, se colocan dos listas:
+    -   La primera lista contiene las etiquetas de las filas que se quieren seleccionar: `['Ana', 'Carlos']`.
+    -   La segunda lista contiene las etiquetas de las columnas que se quieren seleccionar: `['Nombre', 'Ciudad']`.
+-   El resultado es un nuevo DataFrame que contiene solo las filas y columnas especificadas.
+## **Ejemplo 4: Filtrado de filas con condiciones**
+
+Para seleccionar las filas de `df` donde la edad sea mayor a 25:
+
+```python
+# Filtrado de filas usando loc y una condición
+mayores_25 = df.loc[df['Edad'] > 25]
+print(mayores_25)
+```
+
+Resultado:
+
+    ```
+    Nombre       Ciudad  Edad
+0    Ana     Medellín   30
+3  Diego    Cartagena   33
+```
+
+**Explicación:**
+
+-   `df.loc[condición]` selecciona filas que cumplen una condición específica.
+-   Dentro de los corchetes, se coloca una expresión booleana que define la condición. En este caso, `df['Edad'] > 25` selecciona las filas donde la edad en la columna "Edad" es mayor a 25.
+-   El resultado es un nuevo DataFrame que contiene solo las filas que cumplen la condición especificada.
+
+# Ejemplos de `iloc` en Pandas
+
+**Introducción:**
+
+`iloc` es otra herramienta fundamental en Pandas para seleccionar subconjuntos de DataFrames. A diferencia de `loc`, que se basa en etiquetas de filas y columnas, `iloc` utiliza índices numéricos, lo que brinda mayor flexibilidad y control cuando se trabaja con posiciones específicas dentro del DataFrame.
+
+En esta guía, exploraremos 4 ejemplos detallados de `iloc` en diferentes escenarios, abarcando desde la selección básica de filas y columnas hasta filtrados más avanzados y combinaciones con indexadores.
+
+## **Ejemplo 1: Selección básica de filas por índices**
+
+Supongamos un DataFrame `df` que almacena datos de ventas por región:
+
+```python
+import pandas as pd
+
+# Creación de un DataFrame de ejemplo
+df = pd.DataFrame({'Región': ['Norte', 'Sur', 'Este', 'Oeste'],
+                   'Ventas': [10000, 15000, 12000, 9000]})
+```
+
+Para seleccionar la fila correspondiente a la segunda posición (índice 1), podemos utilizar:
+
+```python
+# Selección de la fila con índice 1 usando iloc
+fila_segunda = df.iloc[1]
+print(fila_segunda)
+```
+Resultado:
+
+```
+Región    Sur
+Ventas   15000
+Name: 1, dtype: object
+```
+
+**Explicación:**
+
+-   `df.iloc[]` accede al mecanismo de indexación por posiciones de `df`.
+-   Dentro de los corchetes, se coloca el índice numérico de la fila que queremos seleccionar: `1`.
+-   El resultado es un nuevo DataFrame que contiene solo la fila especificada.
+## **Ejemplo 2: Selección de columnas por índices**
+
+Para obtener la segunda columna (índice 1) del DataFrame `df`:
+
+```python
+# Selección de la columna con índice 1 usando iloc
+columna_ventas = df.iloc[:, 1]
+print(columna_ventas)
+```
+
+Resultado:
+
+```
+0    10000
+1    15000
+2    12000
+3     9000
+Name: Ventas, dtype: int64
+```
+
+**Explicación:**
+
+-   `df.iloc[:,]` indica que queremos seleccionar todas las filas.
+-   Entre dos comas, se coloca el índice numérico de la columna deseada: `1`.
+-   El resultado es una nueva Series que contiene solo los datos de la columna especificada.
+## **Ejemplo 3: Selección de filas y columnas por índices**
+
+Para obtener un subconjunto de `df` que incluya solo las filas en las posiciones 0 y 2 y las columnas en las posiciones 0 y 1:
+
+```python
+# Selección de subconjunto usando iloc
+subdf = df.iloc[[0, 2], [0, 1]]
+print(subdf)
+```
+
+Resultado:
+
+    ```
+    Región  Ventas
+0  Norte   10000
+2  Este   12000
+```
+
+**Explicación:**
+
+-   `df.iloc[filas, columnas]` selecciona filas y columnas a la vez.
+-   Dentro de los corchetes, se colocan dos listas:
+    -   La primera lista contiene los índices numéricos de las filas que se quieren seleccionar: `[0, 2]`.
+    -   La segunda lista contiene los índices numéricos de las columnas que se quieren seleccionar: `[0, 1]`.
+-   El resultado es un nuevo DataFrame que contiene solo las filas y columnas especificadas por sus posiciones.
+## **Ejemplo 4: Filtrado de filas con condiciones**
+
+Para seleccionar las filas de `df` donde las ventas sean mayores a 12000:
+
+```python
+# Filtrado de filas usando iloc y una condición
+mayores_12000 = df.iloc[df['Ventas'] > 12000]
+print(mayores_12000)
+```
+
+Resultado:
+
+```
+    Región  Ventas
+1    Sur    15000
+2   Este    12000
+```
+
+**Explicación:**
+
+-   `df.iloc[condición]` selecciona filas que cumplen una condición específica.
+-   Dentro de los corchetes, se coloca una expresión booleana que define la condición. En este caso, `df['Ventas'] > 12000` selecciona las filas donde las ventas en la columna "Ventas" son mayores a 12000.
+-   El resultado es un nuevo DataFrame que contiene solo las filas que cumplen la condición especificada.
