@@ -213,4 +213,38 @@ export const itemsInfo: itemsInfoType[] = [
             // },
         ]
     },    
+    {
+        href: "",
+        label: "Semana 10",
+        date: '2024-5-3',
+        submenu: [
+            {
+                href: "/course/contents/semana12",
+                label: "Contenido",
+                date: '2024-5-10',
+            },
+            // {
+            //     href: "/course/activities/actividad6",
+            //     label: "Actividad 6",
+            //     date: '2024-4-19',
+            // },
+        ]
+    },    
+    {
+        href: "",
+        label: "Semana 13",
+        date: '2024-5-17',
+        submenu: [
+            {
+                href: "/course/contents/semana13",
+                label: "Contenido",
+                date: '2024-5-17',
+            },
+            {
+                href: "/course/activities/actividad7",
+                label: "Actividad 7",
+                date: '2024-5-17',
+            },
+        ]
+    },    
 ]

@@ -1,0 +1,216 @@
+# Simulador CESDE Bello: Análisis de Calificaciones
+
+Este código implementa un simulador interactivo para analizar las calificaciones de los estudiantes en el CESDE Bello. Permite a los usuarios filtrar y visualizar los datos de manera intuitiva, explorando el rendimiento por grupo, estudiante y momento.
+
+## **Funcionalidades:**
+
+-   **Filtro por grupo:** Permite seleccionar un grupo específico de estudiantes para enfocarse en su rendimiento general.
+-   **Filtro por estudiante:** Permite seleccionar un estudiante individual para analizar sus calificaciones en detalle.
+-   **Filtro por momento:** Permite seleccionar un momento específico de evaluación (o "Todos" para ver el rendimiento en todos los momentos).
+-   **Visualización de gráficos de barras:** Muestra el rendimiento del estudiante o grupo seleccionado en un gráfico de barras apilado, desglosado por las calificaciones de 'CONOCIMIENTO', 'DESEMPEÑO' y 'PRODUCTO'.
+-   **Visualización de tablas:** Muestra una tabla con las calificaciones detalladas del estudiante o grupo seleccionado.
+-   **Cálculo del promedio:** Calcula y muestra el promedio general del rendimiento del estudiante o grupo seleccionado.
+## **Objetivos:**
+
+-   Brindar a los usuarios una herramienta interactiva para explorar las calificaciones de los estudiantes de manera eficiente.
+-   Facilitar la identificación de patrones y tendencias en el rendimiento académico.
+-   Permitir un análisis más profundo del rendimiento de estudiantes o grupos específicos.
+## **Aplicaciones:**
+
+-   Docentes y personal administrativo del CESDE Bello pueden utilizar este simulador para:
+    -   Monitorear el progreso general de los estudiantes.
+    -   Identificar estudiantes con dificultades o con alto rendimiento.
+    -   Evaluar la efectividad de las estrategias de enseñanza y aprendizaje.
+-   Los estudiantes pueden utilizar este simulador para:
+    -   Visualizar su propio rendimiento académico.
+    -   Comparar su rendimiento con el de sus compañeros o grupos.
+    -   Identificar áreas de mejora en su desempeño académico.
+
+## **Dependencias**
+
+```bash
+pip install plotly==5.22.0
+```
+
+## **Simulador CESDE Bello: filtro1, filtro2**
+
+```python
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+
+st.set_page_config(layout="wide")
+# Set the page title and header
+st.title("Simulador CESDE Bello")
+
+df = pd.read_csv('datasets\cesde.csv')
+
+gruposU = sorted(df['GRUPO'].unique())
+nivelesU = sorted(df['NIVEL'].unique())
+jornadasU =  sorted(df['JORNADA'].unique())
+horarioU =  sorted(df['HORARIO'].unique())
+submodulosU =  sorted(df['SUBMODULO'].unique())
+docentesU =  sorted(df['DOCENTE'].unique())
+momentosU =  sorted(df['MOMENTO'].unique())
+
+# -----------------------------------------------------------------------------------
+def filtro1():    
+    col1, col2 = st.columns(2)
+    with col1:
+        grupo = st.selectbox("Grupo",gruposU)
+    with col2:
+        momento = st.selectbox("Momento",momentosU)
+    resultado = df[(df['GRUPO']==grupo)&(df['MOMENTO']==momento)]
+   
+    resultado= resultado.reset_index(drop=True) 
+    # Grafico de barras
+    estudiante=resultado['NOMBRE']
+    fig = go.Figure(data=[
+        go.Bar(name='CONOCIMIENTO', x=estudiante, y=resultado['CONOCIMIENTO']),
+        go.Bar(name='DESEMPEÑO', x=estudiante, y=resultado['DESEMPEÑO']),
+        go.Bar(name='PRODUCTO', x=estudiante, y=resultado['PRODUCTO'])
+    ])   
+    fig.update_layout(barmode='group')
+    st.plotly_chart(fig, use_container_width=True)
+    # Tabla
+    st.table(resultado[["NOMBRE","CONOCIMIENTO","DESEMPEÑO","PRODUCTO"]])
+    
+# -----------------------------------------------------------------------------------
+def filtro2():
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        grupo = st.selectbox("Grupo",gruposU)
+    with col2:
+        nombres = df[df['GRUPO']==grupo]
+        nombre = st.selectbox("Estudiante",nombres["NOMBRE"])
+    with col3:
+        momentosU.append("Todos")
+        momento = st.selectbox("Momento",momentosU)   
+
+    if momento == "Todos":
+        resultado = df[(df['GRUPO']==grupo)&(df['NOMBRE']==nombre)]
+        # Grafico de barras
+        momentos=sorted(df['MOMENTO'].unique())
+        fig = go.Figure(data=[
+            go.Bar(name='CONOCIMIENTO', x=momentos, y=resultado['CONOCIMIENTO']),
+            go.Bar(name='DESEMPEÑO', x=momentos, y=resultado['DESEMPEÑO']),
+            go.Bar(name='PRODUCTO', x=momentos, y=resultado['PRODUCTO'])
+        ])   
+        fig.update_layout(barmode='group')
+        st.plotly_chart(fig, use_container_width=True)
+
+        resultado= resultado.reset_index(drop=True) 
+        m1 = resultado.loc[0,['CONOCIMIENTO','DESEMPEÑO','PRODUCTO']]
+        m2 = resultado.loc[1,['CONOCIMIENTO','DESEMPEÑO','PRODUCTO']]
+        m3 = resultado.loc[2,['CONOCIMIENTO','DESEMPEÑO','PRODUCTO']]
+        tm = pd.Series([m1.mean(),m2.mean(),m3.mean()])       
+        st.subheader("Promedio")
+        st.subheader(round(tm.mean(),1)) 
+    else :   
+        resultado = df[(df['GRUPO']==grupo)&(df['MOMENTO']==momento)&(df['NOMBRE']==nombre)]
+        # Grafico de barras
+        estudiante=resultado['NOMBRE']
+        fig = go.Figure(data=[
+            go.Bar(name='CONOCIMIENTO', x=estudiante, y=resultado['CONOCIMIENTO']),
+            go.Bar(name='DESEMPEÑO', x=estudiante, y=resultado['DESEMPEÑO']),
+            go.Bar(name='PRODUCTO', x=estudiante, y=resultado['PRODUCTO'])
+        ])   
+        fig.update_layout(barmode='group')
+        st.plotly_chart(fig, use_container_width=True)
+
+        resultado= resultado.reset_index(drop=True) 
+        conocimiento = resultado.loc[0,['CONOCIMIENTO','DESEMPEÑO','PRODUCTO']]
+        st.subheader("Promedio")
+        st.subheader(round(conocimiento.mean(),1)) 
+  
+# -----------------------------------------------------------------------------------
+filtros =[
+    "Notas por grupo",
+    "Notas por estudiante"
+]
+
+filtro = st.selectbox("Filtros",filtros)
+
+if filtro:
+    filtro_index = filtros.index(filtro)
+
+    if filtro_index == 0:
+        filtro1()
+    elif filtro_index == 1:
+        filtro2()
+```
+## La función `filtro1` 
+
+La función `filtro1` permite analizar las calificaciones de los estudiantes en el Simulador CESDE Bello por grupo y momento específico. Esta función se implementa dentro de la aplicación Streamlit para filtrar y visualizar los datos de manera interactiva.
+
+### **Pasos de la función `filtro1`:**
+
+### 1.  **Creación de columnas para la selección del usuario:**
+    -   Utiliza `st.columns()` para crear dos columnas en la interfaz de usuario.
+    -   La primera columna ("Grupo") permite al usuario seleccionar un grupo específico de estudiantes utilizando un menú desplegable. Las opciones disponibles se obtienen de la columna "GRUPO" del DataFrame `df`.
+    -   La segunda columna ("Momento") permite al usuario seleccionar un momento específico de evaluación utilizando otro menú desplegable. Las opciones disponibles se obtienen de la columna "MOMENTO" del DataFrame `df`.
+### 2.  **Filtrado de datos:**
+    -   Se utiliza el operador `&` para filtrar el DataFrame `df` en función de las selecciones del usuario:
+        -   `resultado = df[(df['GRUPO']==grupo)&(df['MOMENTO']==momento)]`
+        -   Esto filtra los datos para incluir solo las filas que corresponden al grupo y momento seleccionados.
+### 3.  **Preparación de datos para visualización:**
+    -   Se resetea el índice del DataFrame filtrado (`resultado`) usando `reset_index(drop=True)`.
+    -   Se extrae la columna "NOMBRE" del DataFrame filtrado para identificar a los estudiantes.
+### 4.  **Creación del gráfico de barras:**
+    -   Se utiliza `plotly.graph_objects.Figure` para crear una gráfica de barras.
+    -   Se establece el título del gráfico como "Estudiante".
+    -   Se agregan tres barras para representar las calificaciones de 'CONOCIMIENTO', 'DESEMPEÑO' y 'PRODUCTO'.
+        -   Para cada barra, se utiliza `go.Bar()`.
+        -   Se establece la etiqueta `x` de cada barra en la columna "NOMBRE".
+        -   Se establece la etiqueta `y` de cada barra en la columna correspondiente ('CONOCIMIENTO', 'DESEMPEÑO' o 'PRODUCTO') del DataFrame filtrado.
+    -   Se establece `barmode` en 'group' para apilar las barras de las diferentes calificaciones.
+    -   Finalmente, se muestra el gráfico de barras utilizando `st.plotly_chart()`.
+### 5.  **Visualización de la tabla:**
+    -   Se utiliza `st.table()` para mostrar una tabla que contiene los datos filtrados.
+    -   Se seleccionan las columnas 'NOMBRE', 'CONOCIMIENTO', 'DESEMPEÑO' y 'PRODUCTO' para mostrar en la tabla.
+
+## La función `filtro2`
+
+La función `filtro2` del Simulador CESDE Bello permite analizar las calificaciones de un estudiante específico en detalle, mostrando su rendimiento por grupo, momento y promedio general. Esta función se implementa dentro de la aplicación Streamlit para filtrar y visualizar los datos de manera interactiva.
+
+### **Pasos de la función `filtro2`:**
+
+### 1.  **Creación de columnas para la selección del usuario:**
+    -   Utiliza `st.columns()` para crear tres columnas en la interfaz de usuario.
+    -   La primera columna ("Grupo") permite al usuario seleccionar un grupo específico de estudiantes utilizando un menú desplegable. Las opciones disponibles se obtienen de la columna "GRUPO" del DataFrame `df`.
+    -   La segunda columna ("Estudiante") muestra un menú desplegable que se actualiza dinámicamente según el grupo seleccionado. Este menú contiene los nombres de los estudiantes del grupo elegido.
+        -   Para obtener los nombres de los estudiantes, se filtra el DataFrame `df` por el grupo seleccionado y se extrae la columna "NOMBRE".
+    -   La tercera columna ("Momento") permite al usuario seleccionar un momento específico de evaluación utilizando un menú desplegable. Las opciones disponibles se obtienen de la columna "MOMENTO" del DataFrame `df`. Se agrega la opción "Todos" a esta lista para permitir la visualización del rendimiento del estudiante en todos los momentos.
+### 2.  **Filtrado de datos:**
+    -   Se evalúa si el momento seleccionado es "Todos":
+        -   Si es "Todos":
+            -   Se filtra el DataFrame `df` por el grupo y el nombre del estudiante seleccionados utilizando el operador `&`:
+                -   `resultado = df[(df['GRUPO']==grupo)&(df['NOMBRE']==nombre)]`
+            -   Se crea un gráfico de barras que muestra el rendimiento del estudiante en todos los momentos:
+                -   Se obtienen todos los momentos únicos del DataFrame filtrado.
+                -   Se crea un gráfico de barras utilizando `plotly.graph_objects.Figure`.
+                    -   Se establece el título del gráfico como "Estudiante".
+                    -   Se agregan tres barras para representar las calificaciones de 'CONOCIMIENTO', 'DESEMPEÑO' y 'PRODUCTO' en cada momento.
+                        -   Para cada barra, se utiliza `go.Bar()`.
+                        -   Se establece la etiqueta `x` de cada barra en los momentos únicos.
+                        -   Se establece la etiqueta `y` de cada barra en la columna correspondiente ('CONOCIMIENTO', 'DESEMPEÑO' o 'PRODUCTO') del DataFrame filtrado.
+                    -   Se establece `barmode` en 'group' para apilar las barras de las diferentes calificaciones.
+                    -   Se muestra el gráfico de barras utilizando `st.plotly_chart()`.
+                -   Se calcula el promedio general del rendimiento del estudiante en todos los momentos.
+                -   Se muestra el promedio general utilizando `st.subheader()`.
+        -   Si no es "Todos":
+            -   Se filtra el DataFrame `df` por el grupo, el nombre del estudiante y el momento seleccionados utilizando el operador `&`:
+                -   `resultado = df[(df['GRUPO']==grupo)&(df['NOMBRE']==nombre)&(df['MOMENTO']==momento)]`
+            -   Se crea un gráfico de barras que muestra el rendimiento del estudiante en el momento seleccionado:
+                -   Se extrae la columna "NOMBRE" del DataFrame filtrado para identificar al estudiante.
+                -   Se crea un gráfico de barras utilizando `plotly.graph_objects.Figure`.
+                    -   Se establece el título del gráfico como "Estudiante".
+                    -   Se agregan tres barras para representar las calificaciones de 'CONOCIMIENTO', 'DESEMPEÑO' y 'PRODUCTO'.
+                        -   Para cada barra, se utiliza `go.Bar()`.
+                        -   Se establece la etiqueta `x` de cada barra en la columna "NOMBRE".
+                        -   Se establece la etiqueta `y` de cada barra en la columna correspondiente ('CONOCIMIENTO', 'DESEMPEÑO' o 'PRODUCTO') del DataFrame filtrado.
+                    -   Se establece `barmode` en 'group' para apilar las barras de las diferentes calificaciones.
+                    -   Se muestra el gráfico de barras utilizando `st.plotly_chart()`.
+                -   Se calcula el promedio general del rendimiento del estudiante en el momento seleccionado.
+                -   Se muestra el promedio general utilizando `st.subheader()`.
